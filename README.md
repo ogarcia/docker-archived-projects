@@ -32,9 +32,9 @@ can set different UID, GID and username with environment vars.
 docker run -d
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY \
-  -e USER_UID=500
-  -e USER_GID=500
-  -e USER_NAME=mrpotato
+  -e USER_UID=500 \
+  -e USER_GID=500 \
+  -e USER_NAME=mrpotato \
   --device /dev/snd \ # to have sound
   --name chrome \
   chrome
