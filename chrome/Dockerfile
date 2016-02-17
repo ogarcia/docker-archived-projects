@@ -44,7 +44,7 @@ RUN echo 'deb http://httpredir.debian.org/debian testing main' >> /etc/apt/sourc
   && rm -rf /var/lib/apt/lists/* \
   && rm -rf /src
 
-COPY policies /etc/opt/chrome/policies
-COPY entrypoint.sh /sbin/entrypoint.sh
+COPY docker/policies /etc/opt/chrome/policies
+COPY docker/entrypoint.sh /sbin/entrypoint.sh
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]

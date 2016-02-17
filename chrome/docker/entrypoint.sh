@@ -27,8 +27,12 @@ create_user () {
 }
 
 run_chrome () {
-  su - ${USER_NAME} -c '/usr/bin/google-chrome --no-sandbox --make-default-browser'
-  su - ${USER_NAME} -c '/usr/bin/google-chrome --no-sandbox'
+  [ "${USER_DATA_DIR}" ] && \
+    mkdir -p ${USER_DATA_DIR} && \
+    chown -fR ${USER_UID}:${USER_GID} ${USER_DATA_DIR} && \
+    USER_DATA_DIR="--user-data-dir=${USER_DATA_DIR}"
+  su - ${USER_NAME} -c "/usr/bin/google-chrome --no-sandbox --make-default-browser ${USER_DATA_DIR}"
+  su - ${USER_NAME} -c "/usr/bin/google-chrome --no-sandbox ${USER_DATA_DIR} ${ARGS}"
 }
 
 # Exec CMD or Chrome if nothing present
