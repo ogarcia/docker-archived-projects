@@ -15,9 +15,9 @@ docker run -ti --rm \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --device /dev/snd \
   --name chrome \
-  chrome
+  ogarcia/chrome
 ```
 
 To get more info and hack this build you can read its [specific readme][1].
 
-[1]: (chrome/README.md).
+[1]: chrome/README.md
