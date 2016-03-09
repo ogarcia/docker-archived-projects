@@ -52,7 +52,7 @@ grant_access_to_video_devices() {
 }
 
 run_skype() {
-  su - ${USER_NAME} -c "PULSE_SERVER=/run/pulse/native QT_GRAPHICSSYSTEM=native skype ${ARGS}"
+  su ${USER_NAME} -c "PULSE_SERVER=/run/pulse/native QT_GRAPHICSSYSTEM=native skype ${ARGS}"
 }
 
 # Exec CMD or Chrome if nothing present
