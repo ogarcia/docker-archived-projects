@@ -31,7 +31,7 @@ Type=Application
 Encoding=UTF-8
 Name=Skype
 Comment=Dockerized Skype
-Exec=/usr/bin/docker run --rm -e ARGS=%U -e USER_UID=1000 -e USER_GID=1000 -e USER_NAME=ogarcia -e DISPLAY -e TZ=CET -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/ogarcia/pulse:/run/pulse -v /home/ogarcia/Descargas:/home/ogarcia/Downloads -v /home/ogarcia/.config/skype:/home/ogarcia/.Skype --name skype ogarcia/skype
+Exec=/usr/bin/docker run --rm -e ARGS=%U -e USER_UID=1000 -e USER_GID=1000 -e USER_NAME=ogarcia -e DISPLAY -e TZ=CET -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/1000/pulse:/run/pulse -v /home/ogarcia/Descargas:/home/ogarcia/Downloads -v /home/ogarcia/.config/skype:/home/ogarcia/.Skype --name skype ogarcia/skype
 Icon=skype.png
 Terminal=false
 Categories=Network;Application;
