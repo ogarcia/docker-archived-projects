@@ -8,7 +8,7 @@ RUN dpkg --add-architecture i386 \
  && dpkg --force-depends -i /usr/src/skype.deb \
  && apt-get install -fy \
  && apt-get install -y fonts-cantarell --no-install-recommends \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /usr/src/skype.deb && rm -rf /var/lib/apt/lists/*
 
 COPY docker/entrypoint.sh /sbin/entrypoint.sh
 
