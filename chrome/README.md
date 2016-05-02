@@ -1,4 +1,9 @@
 # Chrome dockerfile
+
+[![Docker Repository on Docker Hub](http://dockeri.co/image/ogarcia/chrome "Docker Repository on Docker Hub")](https://hub.docker.com/r/ogarcia/chrome/)
+
+[![Docker Repository on Quay](https://quay.io/repository/ogarcia/chrome/status "Docker Repository on Quay")](https://quay.io/repository/ogarcia/chrome)
+
 Dockerized Google Chrome
 
 ## Installation
