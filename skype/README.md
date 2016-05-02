@@ -1,5 +1,9 @@
 # Skype dockerfile
 
+[![Docker Repository on Docker Hub](http://dockeri.co/image/ogarcia/skype "Docker Repository on Docker Hub")](https://hub.docker.com/r/ogarcia/skype/)
+
+[![Docker Repository on Quay](https://quay.io/repository/ogarcia/skype/status "Docker Repository on Quay")](https://quay.io/repository/ogarcia/skype)
+
 Dockerized Skype
 
 ## Launch
