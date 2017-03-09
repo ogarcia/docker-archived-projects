@@ -1,0 +1,30 @@
+--- a/conf/defaults.ini	2016-05-30 20:58:55.307752438 +0200
++++ b/conf/defaults.ini	2016-05-30 21:01:03.441083260 +0200
+@@ -13,15 +13,15 @@
+ [paths]
+ # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
+ #
+-data = data
++data = /var/lib/grafana
+ #
+ # Directory where grafana can store logs
+ #
+-logs = data/log
++logs = /var/log/grafana
+ #
+ # Directory where grafana will automatically scan and look for plugins
+ #
+-plugins = data/plugins
++plugins = /var/lib/grafana/plugins
+ 
+ #################################### Server ##############################
+ [server]
+@@ -48,7 +48,7 @@
+ router_logging = false
+ 
+ # the path relative working path
+-static_root_path = public
++static_root_path = /usr/share/grafana/public
+ 
+ # enable gzip
+ enable_gzip = false
