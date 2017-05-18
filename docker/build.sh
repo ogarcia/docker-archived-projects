@@ -58,4 +58,5 @@ chown grafana:grafana /var/lib/grafana
 apk --no-progress del g++ git go make musl-dev nodejs python
 rm -rf /root/.ash_history /root/.cache /root/.config /root/.node-gyp \
   /root/.npm /root/.yarnrc /tmp/* /usr/bin/yarn* /usr/lib/go \
-  /usr/lib/node_modules /var/cache/apk/*
+  /usr/lib/node_modules /usr/local/share/.cache /usr/local/share/.config \
+  /var/cache/apk/*
