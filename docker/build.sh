@@ -6,11 +6,15 @@
 # Distributed under terms of the MIT license.
 #
 
+# add edge repository
+echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+
 # upgrade
 apk -U --no-progress upgrade
 
 # install build deps
-apk -U --no-progress add g++ git go make musl-dev nodejs python
+apk -U --no-progress add g++ git go@edge make musl-dev nodejs python
 
 # extract software
 cd /tmp/build
