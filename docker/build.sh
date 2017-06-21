@@ -48,8 +48,7 @@ install -D -m644 "${GRAFANAPATH}/conf/ldap.toml" \
   "/etc/grafana/ldap.toml"
 
 # create grafana user
-addgroup -S grafana
-adduser -S -D -H -h /var/lib/grafana -s /sbin/nologin -G grafana \
+adduser -S -D -H -h /var/lib/grafana -s /sbin/nologin -G users \
   -g grafana grafana
 mkdir -p /var/lib/grafana
 chown grafana:grafana /var/lib/grafana

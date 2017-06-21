@@ -2,7 +2,7 @@ FROM alpine:3.5
 
 COPY . /tmp/
 
-ADD https://github.com/grafana/grafana/archive/v4.2.0.tar.gz /tmp/build/v4.2.0.tar.gz
+ADD https://github.com/grafana/grafana/archive/v4.3.2.tar.gz /tmp/build/v4.3.2.tar.gz
 
 RUN /tmp/docker/build.sh
 
