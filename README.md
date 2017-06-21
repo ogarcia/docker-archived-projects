@@ -1,6 +1,6 @@
 # Grafana docker [![Build Status](https://travis-ci.org/ogarcia/docker-grafana.svg?branch=master)](https://travis-ci.org/ogarcia/docker-grafana)
 
-(c) 2015-2017 Óscar García Amor Redistribution, modifications and pull
+(c) 2017 Óscar García Amor Redistribution, modifications and pull
 requests are welcomed under the terms of GPLv3 license.
 
 [Grafana][1] is an open source, feature rich metrics dashboard and graph
