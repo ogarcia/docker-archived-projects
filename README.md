@@ -13,7 +13,7 @@ Visit [Docker Hub][3] to see all available tags.
 
 [1]: https://grafana.com/
 [2]: https://alpinelinux.org/
-[3]: https://hub.docker.com/r/connectical/tor/
+[3]: https://hub.docker.com/r/connectical/grafana/
 
 ## Run
 
