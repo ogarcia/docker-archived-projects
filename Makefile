@@ -1,6 +1,6 @@
 DOCKER_USER := ogarcia
 DOCKER_ORGANIZATION := ogarcia
-DOCKER_IMAGE := archlinux-base
+DOCKER_IMAGE := archlinux
 
 docker-image: rootfs
 	docker build -t $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE) .

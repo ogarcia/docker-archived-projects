@@ -13,7 +13,7 @@ Install the following Arch Linux packages:
 
 ## Usage
 
-Run `make` as **root** to build the `archlinux-base` image.
+Run `make` as **root** to build the `archlinux` basic image.
 
 You can build the other targets by setting the `DOCKER_IMAGE` variable when
 calling the make command.
