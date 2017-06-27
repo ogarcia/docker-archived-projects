@@ -1,0 +1,11 @@
+diffutils
+gettext
+grep
+gzip
+pacman
+procps-ng
+psmisc
+sed
+tar
+util-linux
+which
