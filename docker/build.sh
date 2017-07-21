@@ -14,11 +14,11 @@ echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/rep
 apk -U --no-progress upgrade
 
 # install build deps
-apk -U --no-progress add g++ git go@edge make musl-dev nodejs python
+apk --no-progress add g++ git go@edge make musl-dev nodejs python
 
 # extract software
 cd /tmp/build
-tar xzf v*.tar.gz
+tar xzf grafana.tar.gz
 
 # build grafana
 export GOPATH="/tmp/build/gopath"
@@ -51,7 +51,7 @@ install -D -m644 "${GRAFANAPATH}/conf/ldap.toml" \
 adduser -S -D -H -h /var/lib/grafana -s /sbin/nologin -G users \
   -g grafana grafana
 mkdir -p /var/lib/grafana
-chown grafana:grafana /var/lib/grafana
+chown grafana:users /var/lib/grafana
 
 # remove build deps
 apk --no-progress del g++ git go make musl-dev nodejs python
