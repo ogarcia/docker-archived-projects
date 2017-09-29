@@ -6,15 +6,11 @@
 # Distributed under terms of the MIT license.
 #
 
-# add edge repository
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
 # upgrade
 apk -U --no-progress upgrade
 
 # install build deps
-apk --no-progress add g++ git go@edge make musl-dev nodejs python
+apk --no-progress add g++ git go make musl-dev nodejs nodejs-npm python
 
 # extract software
 cd /tmp/build
@@ -54,7 +50,7 @@ mkdir -p /var/lib/grafana
 chown grafana:users /var/lib/grafana
 
 # remove build deps
-apk --no-progress del g++ git go make musl-dev nodejs python
+apk --no-progress del g++ git go make musl-dev nodejs nodejs-npm python
 rm -rf /root/.ash_history /root/.cache /root/.config /root/.node-gyp \
   /root/.npm /root/.yarnrc /tmp/* /usr/bin/yarn* /usr/lib/go \
   /usr/lib/node_modules /usr/local/share/.cache /usr/local/share/.config \
