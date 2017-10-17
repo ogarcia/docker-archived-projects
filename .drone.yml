@@ -2,20 +2,18 @@ pipeline:
   build-test-push:
     image: ogarcia/archlinux
     commands:
-      - echo "test"
-      - ls /error # force fail
-#      - pacman -Sy --noconfirm archlinux-keyring
-#      - pacman -Syu --noconfirm make devtools docker
-#      - make rootfs
-#      - DOCKER_TAG=$$(date +%Y.%m.%d)
-#      - docker build -t ogarcia/archlinux:$${DOCKER_TAG} .
-#      - docker tag ogarcia/archlinux:$${DOCKER_TAG} ogarcia/archlinux:latest
-#      - docker system prune -f
-#      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -V"
-#      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -Syu --noconfirm docker && docker -v"
-#      - docker login -u $DOCKER_USER -p $DOCKER_PASS
-#      - docker push ogarcia/archlinux:$${DOCKER_TAG}
-#      - docker push ogarcia/archlinux:latest
+      - pacman -Sy --noconfirm archlinux-keyring
+      - pacman -Syu --noconfirm make devtools docker
+      - make rootfs
+      - DOCKER_TAG=$$(date +%Y.%m.%d)
+      - docker build -t ogarcia/archlinux:$${DOCKER_TAG} .
+      - docker tag ogarcia/archlinux:$${DOCKER_TAG} ogarcia/archlinux:latest
+      - docker system prune -f
+      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -V"
+      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -Syu --noconfirm docker && docker -v"
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push ogarcia/archlinux:$${DOCKER_TAG}
+      - docker push ogarcia/archlinux:latest
     secrets: [ docker_user, docker_pass ]
     privileged: true
     volumes:
