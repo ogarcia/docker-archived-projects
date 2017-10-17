@@ -18,3 +18,13 @@ pipeline:
     privileged: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  notify:
+    image: drillster/drone-email
+    host: $MAIL_HOST
+    username: $MAIL_USER
+    password: $MAIL_PASS
+    from: $MAIL_FROM
+    secrets: [ mail_host, mail_user, mail_pass, mail_from ]
+    when:
+      status: [ changed, failure ]
