@@ -28,5 +28,5 @@ pipeline:
     password: ${mail_pass}
     from: ${mail_from}
     secrets: [ mail_host, mail_user, mail_pass, mail_from ]
-    #when:
-    #  status: [ changed, failure ]
+    when:
+      status: [ changed, failure ]
