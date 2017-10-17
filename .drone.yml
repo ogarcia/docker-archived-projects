@@ -23,9 +23,7 @@ pipeline:
 
   notify:
     image: drillster/drone-email
-    username: ${mail_user}
-    password: ${mail_pass}
-    from: ${mail_from}
-    secrets: [ email_host, mail_user, mail_pass, mail_from ]
+    from: drone@moire.org
+    secrets: [ email_host, email_username, email_password ]
     when:
       status: [ changed, failure ]
