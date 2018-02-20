@@ -23,11 +23,10 @@ mkdir -p ${GRAFANAPATH%/*}
 ln -fsT /tmp/build/grafana-* ${GRAFANAPATH}
 cd ${GRAFANAPATH}
 patch -p1 <"/tmp/docker/defaults.patch"
-go run build.go setup
-go run build.go build
+go run build.go setup build
 npm install -g yarn
-yarn install --pure-lockfile
-npm run build
+yarn install --pure-lockfile --no-progress
+npm run build release
 
 # install grafana
 install -D -m755 "${GRAFANAPATH}/bin/grafana-cli" \
@@ -36,7 +35,7 @@ install -D -m755 "${GRAFANAPATH}/bin/grafana-server" \
   "/usr/bin/grafana-server"
 install -D -m644 "${GRAFANAPATH}/conf/defaults.ini" \
   "/usr/share/grafana/conf/defaults.ini"
-mv ${GRAFANAPATH}/public_gen /usr/share/grafana/public
+mv ${GRAFANAPATH}/public /usr/share/grafana/
 mv ${GRAFANAPATH}/vendor /usr/share/grafana/
 install -D -m644 "${GRAFANAPATH}/conf/sample.ini" \
   "/etc/grafana/grafana.ini"
