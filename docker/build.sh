@@ -29,7 +29,7 @@ ln -fsT /tmp/build/influxdb-* ${INFLUXDBPATH}
 cd ${INFLUXDBPATH}
 go get github.com/sparrc/gdm
 ${GOBIN}/gdm restore
-go install -ldflags "-X main.version=1.3.1" ./...
+go install -ldflags "-X main.version=1.4.3" ./...
 
 # install influxdb
 install -D -m755 "${GOBIN}/influxd" "/usr/bin/influxd"
