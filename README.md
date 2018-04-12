@@ -1,6 +1,6 @@
 # InfluxDB docker [![Build Status](https://travis-ci.org/ogarcia/docker-influxdb.svg?branch=master)](https://travis-ci.org/ogarcia/docker-influxdb)
 
-(c) 2017 Óscar García Amor
+(c) 2017-2018 Óscar García Amor
 
 Redistribution, modifications and pull requests are welcomed under the terms
 of GPLv3 license.
