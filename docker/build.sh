@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # build.bash
-# Copyright (C) 2017 Óscar García Amor <ogarcia@connectical.com>
+# Copyright (C) 2017-2018 Óscar García Amor <ogarcia@connectical.com>
 #
 # Distributed under terms of the MIT license.
 #

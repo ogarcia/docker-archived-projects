@@ -1,21 +1,23 @@
---- a/conf/defaults.ini	2016-05-30 20:58:55.307752438 +0200
-+++ b/conf/defaults.ini	2016-05-30 21:01:03.441083260 +0200
-@@ -13,15 +13,15 @@
+--- a/conf/defaults.ini	2018-02-22 09:46:29.596849636 +0100
++++ b/conf/defaults.ini	2018-02-22 09:49:15.759561933 +0100
+@@ -12,16 +12,16 @@
+ #################################### Paths ###############################
  [paths]
  # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
- #
 -data = data
 +data = /var/lib/grafana
- #
+ 
  # Directory where grafana can store logs
- #
 -logs = data/log
 +logs = /var/log/grafana
- #
+ 
  # Directory where grafana will automatically scan and look for plugins
- #
 -plugins = data/plugins
 +plugins = /var/lib/grafana/plugins
+ 
+ # folder that contains provisioning config files that grafana will apply on startup and while running.
+-provisioning = conf/provisioning
++provisioning = /etc/grafana/provisioning
  
  #################################### Server ##############################
  [server]
