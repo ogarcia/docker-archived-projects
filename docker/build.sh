@@ -6,15 +6,11 @@
 # Distributed under terms of the MIT license.
 #
 
-# add edge repository
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
 # upgrade
 apk -U --no-progress upgrade
 
 # install build deps
-apk --no-progress add g++ git go@edge
+apk --no-progress add g++ git go
 
 # extract software
 cd /tmp/build
@@ -29,7 +25,7 @@ ln -fsT /tmp/build/influxdb-* ${INFLUXDBPATH}
 cd ${INFLUXDBPATH}
 go get github.com/sparrc/gdm
 ${GOBIN}/gdm restore
-go install -ldflags "-X main.version=1.5.0" ./...
+go install -ldflags "-X main.version=1.5.1" ./...
 
 # install influxdb
 install -D -m755 "${GOBIN}/influxd" "/usr/bin/influxd"
