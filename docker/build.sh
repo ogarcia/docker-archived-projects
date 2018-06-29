@@ -29,9 +29,9 @@ yarn install --pure-lockfile --no-progress
 npm run build release
 
 # install grafana
-install -D -m755 "${GRAFANAPATH}/bin/grafana-cli" \
+install -D -m755 "${GRAFANAPATH}/bin/linux-amd64/grafana-cli" \
   "/usr/bin/grafana-cli"
-install -D -m755 "${GRAFANAPATH}/bin/grafana-server" \
+install -D -m755 "${GRAFANAPATH}/bin/linux-amd64/grafana-server" \
   "/usr/bin/grafana-server"
 install -D -m644 "${GRAFANAPATH}/conf/defaults.ini" \
   "/usr/share/grafana/conf/defaults.ini"
