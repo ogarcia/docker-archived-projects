@@ -5,4 +5,4 @@ services:
   - docker
 
 script:
-  - make ci-test
+  - travis_wait 30 make ci-test
