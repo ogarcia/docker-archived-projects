@@ -1,11 +1,14 @@
---- a/conf/defaults.ini	2018-02-22 09:46:29.596849636 +0100
-+++ b/conf/defaults.ini	2018-02-22 09:49:15.759561933 +0100
-@@ -12,16 +12,16 @@
+--- a/conf/defaults.ini	2018-10-10 16:38:37.823635136 +0200
++++ b/conf/defaults.ini	2018-10-10 16:41:11.908510413 +0200
+@@ -12,19 +12,19 @@
  #################################### Paths ###############################
  [paths]
  # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
 -data = data
 +data = /var/lib/grafana
+ 
+ # Temporary files in `data` directory older than given duration will be removed
+ temp_data_lifetime = 24h
  
  # Directory where grafana can store logs
 -logs = data/log
@@ -21,7 +24,7 @@
  
  #################################### Server ##############################
  [server]
-@@ -48,7 +48,7 @@
+@@ -51,7 +51,7 @@
  router_logging = false
  
  # the path relative working path
