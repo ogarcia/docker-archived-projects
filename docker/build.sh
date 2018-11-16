@@ -23,9 +23,9 @@ export INFLUXDBPATH="${GOPATH}/src/github.com/influxdata/influxdb"
 mkdir -p ${INFLUXDBPATH%/*}
 ln -fsT /tmp/build/influxdb-* ${INFLUXDBPATH}
 cd ${INFLUXDBPATH}
-go get github.com/sparrc/gdm
-${GOBIN}/gdm restore
-go install -ldflags "-X main.version=1.5.1" ./...
+go get -v -u github.com/golang/dep/cmd/dep
+${GOBIN}/dep ensure -v -vendor-only
+go install -ldflags "-X main.version=1.7.1" ./...
 
 # install influxdb
 install -D -m755 "${GOBIN}/influxd" "/usr/bin/influxd"
@@ -41,4 +41,4 @@ chown influxdb:users /var/lib/influxdb
 
 # remove build deps
 apk --no-progress del g++ git go
-rm -rf /root/.ash_history /tmp/* /var/cache/apk/* /var/cache/misc/*
+rm -rf /root/.ash_history /root/.cache /tmp/* /var/cache/apk/* /var/cache/misc/*
