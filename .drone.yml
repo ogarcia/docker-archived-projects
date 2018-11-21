@@ -23,13 +23,14 @@ steps:
 
   - name: notify
     image: drillster/drone-email
-    from: drone@moire.org
-    host:
-      from_secret: email_host
-    username:
-      from_secret: email_username
-    password:
-      from_secret: email_password
+    settings:
+      from: drone@moire.org
+      host:
+        from_secret: email_host
+      username:
+        from_secret: email_username
+      password:
+        from_secret: email_password
     when:
       status:
         - failure
