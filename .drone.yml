@@ -1,27 +1,36 @@
-pipeline:
-  build-test-push:
+kind: pipeline
+name: archlinux
+
+steps:
+  - name: build
     image: ogarcia/archlinux
+    privileged: true
     commands:
       - pacman -Sy --noconfirm archlinux-keyring
-      - pacman -Syu --noconfirm make devtools docker
+      - pacman -Syu --noconfirm make devtools
       - make rootfs
       - DOCKER_TAG=$$(date +%Y.%m.%d)
-      - docker build -t ogarcia/archlinux:$${DOCKER_TAG} .
-      - docker tag ogarcia/archlinux:$${DOCKER_TAG} ogarcia/archlinux:latest
-      - docker system prune -f
-      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -V"
-      - docker run --rm ogarcia/archlinux sh -c "/usr/bin/pacman -Syu --noconfirm docker && docker -v"
-      - docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push ogarcia/archlinux:$${DOCKER_TAG}
-      - docker push ogarcia/archlinux:latest
-    secrets: [ docker_user, docker_pass ]
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - echo -n "$${DOCKER_TAG},latest" > .tags
 
-  notify:
+  - name: push
+    image: plugins/docker
+    settings:
+      repo: ogarcia/archtest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+  - name: notify
     image: drillster/drone-email
     from: drone@moire.org
-    secrets: [ email_host, email_username, email_password ]
+    host:
+      from_secret: email_host
+    username:
+      from_secret: email_username
+    password:
+      from_secret: email_password
     when:
-      status: [ changed, failure ]
+      status:
+        - failure
+        - success
