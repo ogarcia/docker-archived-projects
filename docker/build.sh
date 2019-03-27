@@ -25,7 +25,7 @@ ln -fsT /tmp/build/influxdb-* ${INFLUXDBPATH}
 cd ${INFLUXDBPATH}
 go get -v -u github.com/golang/dep/cmd/dep
 ${GOBIN}/dep ensure -v -vendor-only
-go install -ldflags "-X main.version=1.7.4" ./...
+go install -ldflags "-X main.version=1.7.5" ./...
 
 # install influxdb
 install -D -m755 "${GOBIN}/influxd" "/usr/bin/influxd"
