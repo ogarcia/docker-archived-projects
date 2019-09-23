@@ -2,7 +2,7 @@ FROM alpine:3.9
 
 COPY docker /tmp/docker
 
-ADD https://github.com/grafana/grafana/archive/v6.3.5.tar.gz /tmp/build/grafana.tar.gz
+ADD https://github.com/grafana/grafana/archive/v6.3.6.tar.gz /tmp/build/grafana.tar.gz
 
 RUN /tmp/docker/build.sh
 
