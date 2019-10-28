@@ -2,7 +2,7 @@ FROM alpine:3.10
 
 COPY docker /tmp/docker
 
-ADD https://github.com/influxdata/influxdb/archive/v1.7.8.tar.gz /tmp/build/influxdb.tar.gz
+ADD https://github.com/influxdata/influxdb/archive/v1.7.9.tar.gz /tmp/build/influxdb.tar.gz
 
 RUN /tmp/docker/build.sh
 
