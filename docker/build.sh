@@ -17,44 +17,39 @@ apk -U --no-progress upgrade
 apk --no-progress add g++ git go@edge make musl-dev nodejs nodejs-npm python
 
 # extract software
-cd /tmp/build
+cd /grafana/src/
 tar xzf grafana.tar.gz
 
 # build grafana
-export GOPATH="/tmp/build/gopath"
-export GRAFANAPATH="${GOPATH}/src/github.com/grafana/grafana"
-mkdir -p ${GRAFANAPATH%/*}
-ln -fsT /tmp/build/grafana-* ${GRAFANAPATH}
-cd ${GRAFANAPATH}
-patch -p1 <"/tmp/docker/defaults.patch"
+export GOPATH="/grafana/src/gopath"
+mkdir -p "${GOPATH}/src/github.com/grafana/"
+ln -fsT /grafana/src/grafana-* "${GOPATH}/src/github.com/grafana/grafana"
+cd "${GOPATH}/src/github.com/grafana/grafana"
+patch -p1 <"/grafana/docker/defaults.patch"
 go run build.go setup build
 npm install -g yarn
 yarn install --pure-lockfile --no-progress
 npm run build release
 
 # install grafana
-install -D -m755 "${GRAFANAPATH}/bin/linux-amd64/grafana-cli" \
-  "/usr/bin/grafana-cli"
-install -D -m755 "${GRAFANAPATH}/bin/linux-amd64/grafana-server" \
-  "/usr/bin/grafana-server"
-install -D -m644 "${GRAFANAPATH}/conf/defaults.ini" \
-  "/usr/share/grafana/conf/defaults.ini"
-mv ${GRAFANAPATH}/public /usr/share/grafana/
-mv ${GRAFANAPATH}/vendor /usr/share/grafana/
-install -D -m644 "${GRAFANAPATH}/conf/sample.ini" \
-  "/etc/grafana/grafana.ini"
-install -D -m644 "${GRAFANAPATH}/conf/ldap.toml" \
-  "/etc/grafana/ldap.toml"
+install -D -m755 "bin/linux-amd64/grafana-cli" \
+  "/grafana/pkg/bin/grafana-cli"
+install -D -m755 "bin/linux-amd64/grafana-server" \
+  "/grafana/pkg/bin/grafana-server"
+install -D -m644 "conf/defaults.ini" \
+  "/grafana/pkg/usr/share/grafana/conf/defaults.ini"
+mv "public" "/grafana/pkg/usr/share/grafana/"
+mv "vendor" "/grafana/pkg/usr/share/grafana/"
+install -D -m644 "conf/sample.ini" \
+  "/grafana/pkg/etc/grafana/grafana.ini"
+install -D -m644 "conf/ldap.toml" \
+  "/grafana/pkg/etc/grafana/ldap.toml"
+install -d -m755 -o100 -g100 "/grafana/pkg/var/lib/grafana" \
+  "/grafana/pkg/var/log/grafana"
 
 # create grafana user
 adduser -S -D -H -h /var/lib/grafana -s /sbin/nologin -G users \
   -g grafana grafana
-mkdir -p /var/lib/grafana
-chown grafana:users /var/lib/grafana
-
-# remove build deps
-apk --no-progress del g++ git go make musl-dev nodejs nodejs-npm python
-rm -rf /root/.ash_history /root/.cache /root/.config /root/.node-gyp \
-  /root/.npm /root/.yarnrc /tmp/* /usr/bin/yarn* /usr/lib/go \
-  /usr/lib/node_modules /usr/local/share/.cache /usr/local/share/.config \
-  /var/cache/apk/*
+install -m644 "/etc/passwd" "/grafana/pkg/etc/passwd"
+install -m644 "/etc/group" "/grafana/pkg/etc/group"
+install -m640 -gshadow "/etc/shadow" "/grafana/pkg/etc/shadow"
