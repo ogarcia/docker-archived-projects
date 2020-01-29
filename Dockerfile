@@ -1,9 +1,9 @@
-FROM alpine:3.10
+FROM alpine:3.11
 COPY docker /grafana/docker
 ADD https://github.com/grafana/grafana/archive/v6.6.0.tar.gz /grafana/src/grafana.tar.gz
 RUN /grafana/docker/build.sh
 
-FROM alpine:3.10
+FROM alpine:3.11
 COPY --from=0 /grafana/pkg /
 EXPOSE 3000
 VOLUME [ "/etc/grafana", "/var/lib/grafana", "/var/log/grafana" ]
