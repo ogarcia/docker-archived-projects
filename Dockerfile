@@ -1,9 +1,12 @@
-FROM alpine:3.11
-COPY docker /grafana/docker
-ADD https://github.com/grafana/grafana/archive/v6.6.0.tar.gz /grafana/src/grafana.tar.gz
-RUN /grafana/docker/build.sh
+ARG ALPINE_VERSION
 
-FROM alpine:3.11
+FROM alpine:${ALPINE_VERSION}
+ARG GRAFANA_VERSION
+COPY .circleci /grafana/build
+ADD https://github.com/grafana/grafana/archive/v${GRAFANA_VERSION}.tar.gz /grafana/src/grafana.tar.gz
+RUN /grafana/build/build.sh
+
+FROM alpine:${ALPINE_VERSION}
 COPY --from=0 /grafana/pkg /
 EXPOSE 3000
 VOLUME [ "/etc/grafana", "/var/lib/grafana", "/var/log/grafana" ]

@@ -1,8 +1,0 @@
-sudo: required
-language: bash
-
-services:
-  - docker
-
-script:
-  - travis_wait 60 make ci-test

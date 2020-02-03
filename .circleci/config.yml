@@ -1,0 +1,59 @@
+version: 2.1
+
+executors:
+  docker-build-buster:
+    docker:
+      - image: circleci/buildpack-deps:buster
+
+jobs:
+  build:
+    executor: docker-build-buster
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: make docker-build
+          no_output_timeout: 60m
+      - run:
+          name: Test Docker image
+          command: make docker-test
+      - run:
+          name: Save Docker image
+          command: DOCKER_IMAGE_NAME=image.tar make docker-save
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+  publish:
+    executor: docker-build-buster
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: DOCKER_IMAGE_NAME=/tmp/workspace/image.tar make docker-load
+      - run:
+          name: Push Docker image to Docker Hub
+          command: make docker-push
+
+workflows:
+  version: 2
+  build-tags:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+      - publish:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

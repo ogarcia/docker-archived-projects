@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # build.bash
-# Copyright (C) 2017-2018 Óscar García Amor <ogarcia@connectical.com>
+# Copyright (C) 2017-2020 Óscar García Amor <ogarcia@connectical.com>
 #
 # Distributed under terms of the MIT license.
 #
@@ -25,7 +25,7 @@ export GOPATH="/grafana/src/gopath"
 mkdir -p "${GOPATH}/src/github.com/grafana/"
 ln -fsT /grafana/src/grafana-* "${GOPATH}/src/github.com/grafana/grafana"
 cd "${GOPATH}/src/github.com/grafana/grafana"
-patch -p1 <"/grafana/docker/defaults.patch"
+patch -p1 <"/grafana/build/defaults.patch"
 go run build.go setup build
 npm install -g yarn
 yarn install --pure-lockfile --no-progress

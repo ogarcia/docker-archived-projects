@@ -1,6 +1,6 @@
-# Grafana docker [![Build Status](https://travis-ci.org/ogarcia/docker-grafana.svg?branch=master)](https://travis-ci.org/ogarcia/docker-grafana)
+# Grafana docker [![CircleCI](https://circleci.com/gh/ogarcia/docker-grafana.svg?style=svg)](https://circleci.com/gh/ogarcia/docker-grafana)
 
-(c) 2017-2018 Óscar García Amor
+(c) 2017-2020 Óscar García Amor
 
 Redistribution, modifications and pull requests are welcomed under the terms
 of GPLv3 license.
