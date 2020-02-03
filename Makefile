@@ -22,7 +22,7 @@ docker-test:
 	docker run --rm $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE) -v
 
 docker-save:
-	docker image inspect $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE)
+	docker image inspect $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE) > /dev/null 2>&1
 	docker save -o $(DOCKER_IMAGE_FILENAME) $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE)
 
 docker-load:
