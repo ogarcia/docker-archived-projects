@@ -31,7 +31,7 @@ ifneq ($(wildcard $(DOCKER_IMAGE_FILENAME)),)
 endif
 
 docker-push: check-env
-	echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+	echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 	docker push $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest
 ifdef CIRCLE_TAG
 	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):${CIRCLE_TAG}
