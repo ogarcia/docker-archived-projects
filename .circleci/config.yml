@@ -20,7 +20,7 @@ jobs:
           command: make docker-test
       - run:
           name: Save Docker image
-          command: DOCKER_IMAGE_NAME=image.tar make docker-save
+          command: DOCKER_IMAGE_FILENAME=image.tar make docker-save
       - persist_to_workspace:
           root: .
           paths:
@@ -34,7 +34,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Load archived Docker image
-          command: DOCKER_IMAGE_NAME=/tmp/workspace/image.tar make docker-load
+          command: DOCKER_IMAGE_FILENAME=/tmp/workspace/image.tar make docker-load
       - run:
           name: Push Docker image to Docker Hub
           command: make docker-push

@@ -1,9 +1,8 @@
 ALPINE_VERSION := 3.11
 GRAFANA_VERSION := 6.6.0
-DOCKER_USER := ogarcia
 DOCKER_ORGANIZATION := connectical
 DOCKER_IMAGE := grafana
-DOCKER_IMAGE_NAME ?= $(DOCKER_ORGANIZATION)_$(DOCKER_IMAGE).tar
+DOCKER_IMAGE_FILENAME ?= $(DOCKER_ORGANIZATION)_$(DOCKER_IMAGE).tar
 
 all: docker-build docker-test
 
@@ -24,11 +23,11 @@ docker-test:
 
 docker-save:
 	docker image inspect $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE)
-	docker save -o $(DOCKER_IMAGE_NAME) $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE)
+	docker save -o $(DOCKER_IMAGE_FILENAME) $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE)
 
 docker-load:
-ifneq ($(wildcard $(DOCKER_IMAGE_NAME)),)
-	docker load -i $(DOCKER_IMAGE_NAME)
+ifneq ($(wildcard $(DOCKER_IMAGE_FILENAME)),)
+	docker load -i $(DOCKER_IMAGE_FILENAME)
 endif
 
 docker-push: check-env
