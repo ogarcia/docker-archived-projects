@@ -10,7 +10,8 @@ jobs:
     executor: docker-build-buster
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 18.09.3
       - run:
           name: Build Docker image
           command: make docker-build
@@ -31,7 +32,8 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 18.09.3
       - run:
           name: Load archived Docker image
           command: DOCKER_IMAGE_FILENAME=/tmp/workspace/image.tar make docker-load
