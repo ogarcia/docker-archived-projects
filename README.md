@@ -1,6 +1,6 @@
-# InfluxDB docker [![Build Status](https://travis-ci.org/ogarcia/docker-influxdb.svg?branch=master)](https://travis-ci.org/ogarcia/docker-influxdb)
+# InfluxDB docker [![CircleCI](https://circleci.com/gh/ogarcia/docker-influxdb.svg?style=svg)](https://circleci.com/gh/ogarcia/docker-influxdb)
 
-(c) 2017-2018 Óscar García Amor
+(c) 2017-2020 Óscar García Amor
 
 Redistribution, modifications and pull requests are welcomed under the terms
 of GPLv3 license.
@@ -12,11 +12,12 @@ analytics.
 This docker packages **InfluxDB** under [Alpine Linux][2], a lightweight
 Linux distribution.
 
-Visit [Docker Hub][3] to see all available tags.
+Visit [Docker Hub][3] or [Quay][4] to see all available tags.
 
 [1]: https://www.influxdata.com/
 [2]: https://alpinelinux.org/
 [3]: https://hub.docker.com/r/connectical/influxdb/
+[4]: https://quay.io/repository/connectical/influxdb/
 
 ## Run
 

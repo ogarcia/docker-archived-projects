@@ -1,15 +1,14 @@
-FROM alpine:3.10
+ARG ALPINE_VERSION
 
-COPY docker /tmp/docker
+FROM alpine:${ALPINE_VERSION}
+ARG INFLUXDB_VERSION
+COPY .circleci /influxdb/build
+ADD https://github.com/influxdata/influxdb/archive/v${INFLUXDB_VERSION}.tar.gz /influxdb/src/influxdb.tar.gz
+RUN /influxdb/build/build.sh ${INFLUXDB_VERSION}
 
-ADD https://github.com/influxdata/influxdb/archive/v1.7.9.tar.gz /tmp/build/influxdb.tar.gz
-
-RUN /tmp/docker/build.sh
-
+FROM alpine:${ALPINE_VERSION}
+COPY --from=0 /influxdb/pkg /
 EXPOSE 8086
-
 VOLUME [ "/etc/influxdb", "/var/lib/influxdb" ]
-
 USER influxdb
-
 ENTRYPOINT [ "/usr/bin/influxd" ]
