@@ -11,11 +11,12 @@ editor for Graphite, Elasticsearch, OpenTSDB, Prometheus and InfluxDB.
 This docker packages **Grafana** under [Alpine Linux][2], a lightweight
 Linux distribution.
 
-Visit [Docker Hub][3] to see all available tags.
+Visit [Docker Hub][3] or [Quay][4] to see all available tags.
 
 [1]: https://grafana.com/
 [2]: https://alpinelinux.org/
 [3]: https://hub.docker.com/r/connectical/grafana/
+[4]: https://quay.io/repository/connectical/grafana/
 
 ## Run
 
