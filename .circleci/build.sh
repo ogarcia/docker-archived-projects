@@ -19,10 +19,10 @@ tar xzf influxdb.tar.gz
 # build influxdb
 export GOPATH="/influxdb/src/gopath"
 export GOBIN="${GOPATH}/bin"
+go get -v -u github.com/golang/dep/...
 mkdir -p "${GOPATH}/src/github.com/influxdata/"
 ln -fsT /influxdb/src/influxdb-* "${GOPATH}/src/github.com/influxdata/influxdb"
 cd "${GOPATH}/src/github.com/influxdata/influxdb"
-go get -v -u github.com/golang/dep/cmd/dep
 ${GOBIN}/dep ensure -v -vendor-only
 go install -ldflags "-X main.version=${1}" ./...
 
