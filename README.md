@@ -1,9 +1,11 @@
-# Docker images for Arch Linux  [![Tests Status](https://travis-ci.org/ogarcia/docker-archlinux.svg?branch=master)](https://travis-ci.org/ogarcia/docker-archlinux) [![Publish Status](https://drone.moire.org/api/badges/ogarcia/docker-archlinux/status.svg)](https://drone.moire.org/ogarcia/docker-archlinux)
+# Docker images for Arch Linux [![CircleCI](https://circleci.com/gh/ogarcia/docker-archlinux.svg?style=svg)](https://circleci.com/gh/ogarcia/docker-archlinux)
+
+(c) 2017-2020 Óscar García Amor
 
 This repository contains all the scripts and files needed to create various
 Docker image flavors of the Arch Linux distribution.
 
-## Dependencies
+## Dependencies for build in your Arch Linux host
 
 Install the following Arch Linux packages:
 
@@ -13,11 +15,13 @@ Install the following Arch Linux packages:
 
 ## Usage
 
-Run `make` as **root** to build the `archlinux` basic image.
+Run `make` as **root** to build the `archlinux` basic image rootfs in temp
+directory of your host, run `make all-in-docker` to build rootfs in
+a container (for example if your host is not based in Arch Linux).
 
-You can build the other targets by setting the `DOCKER_IMAGE` variable when
+You can build the other targets by setting the `DOCKER_TAG` variable when
 calling the make command.
 
 ```sh
-make DOCKER_IMAGE=archlinux-devel
+make DOCKER_TAG=devel
 ```

@@ -1,0 +1,254 @@
+version: 2.1
+
+executors:
+  docker-build-buster:
+    docker:
+      - image: circleci/buildpack-deps:buster
+
+jobs:
+  build-rootfs:
+    machine:
+      image: ubuntu-1604:201903-01
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+    steps:
+      - checkout
+      - run:
+          name: Build Arch Linux RootFS
+          command: make rootfs-in-docker
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./rootfs.tar
+  build-docker:
+    executor: docker-build-buster
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run:
+          name: Build Arch Linux Docker image
+          command: |
+            mv << parameters.workspace-path >>/rootfs.tar .
+            make docker-build
+      - run:
+          name: Save Arch Linux Docker image
+          command: make docker-save
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+  test:
+    executor: docker-build-buster
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Test Arch Linux Docker image
+          command: make docker-test
+  publish-dockerhub:
+    executor: docker-build-buster
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Push Arch Linux Docker image to Docker Hub
+          command: make dockerhub-push
+  publish-quay:
+    executor: docker-build-buster
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Push Arch Linux Docker image to Quay.io
+          command: make quay-push
+
+workflows:
+  version: 2
+  build-deploy-archlinux:
+    jobs:
+      - build-rootfs
+      - build-docker:
+          requires:
+            - build-rootfs
+      - test:
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          requires:
+            - test
+      - publish-quay:
+          requires:
+            - test
+  build-deploy-archlinux-devel:
+    jobs:
+      - build-rootfs:
+          docker-tag: devel
+      - build-docker:
+          docker-tag: devel
+          requires:
+            - build-rootfs
+      - test:
+          docker-tag: devel
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          docker-tag: devel
+          requires:
+            - test
+      - publish-quay:
+          docker-tag: devel
+          requires:
+            - test
+  cron-build-deploy-archlinux:
+    triggers:
+      - schedule:
+          cron: "0 0 1,15 * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build-rootfs
+      - build-docker:
+          requires:
+            - build-rootfs
+      - test:
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          requires:
+            - test
+      - publish-quay:
+          requires:
+            - test
+  cron-build-deploy-archlinux-devel:
+    triggers:
+      - schedule:
+          cron: "0 0 1,15 * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build-rootfs:
+          docker-tag: devel
+      - build-docker:
+          docker-tag: devel
+          requires:
+            - build-rootfs
+      - test:
+          docker-tag: devel
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          docker-tag: devel
+          requires:
+            - test
+      - publish-quay:
+          docker-tag: devel
+          requires:
+            - test

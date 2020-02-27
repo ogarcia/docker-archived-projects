@@ -1,3 +1,3 @@
 FROM scratch
-ADD archlinux.tar /
+ADD rootfs.tar /
 CMD ["/usr/bin/bash"]

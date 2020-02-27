@@ -1,5 +1,6 @@
 # ---> Project
-archlinux.tar
+rootfs.tar
+*archlinux*.tar
 
 # ---> Vim
 [._]*.s[a-w][a-z]
