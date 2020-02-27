@@ -42,8 +42,8 @@ rootfs:
 
 rootfs-in-docker:
 	docker run --rm --privileged --tmpfs=/tmp:exec --tmpfs=/run/shm -v /run/docker.sock:/run/docker.sock \
-		-v $(shell pwd):/app -w /app $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE) sh -c \
-		'pacman -Sy --noprogressbar --noconfirm archlinux-keyring && pacman -Syu --noprogressbar --noconfirm --needed make devtools && make rootfs'
+		-e DOCKER_TAG=$(DOCKER_TAG) -v $(shell pwd):/app -w /app $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE) sh -c \
+		'pacman -Sy --noprogressbar --noconfirm --needed archlinux-keyring && pacman -Syu --noprogressbar --noconfirm --needed make devtools && make rootfs'
 
 docker-build:
 	docker build -t $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(DOCKER_TAG) .
