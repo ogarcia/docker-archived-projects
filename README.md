@@ -5,6 +5,26 @@
 This repository contains all the scripts and files needed to create various
 Docker image flavors of the Arch Linux distribution.
 
+## About tags
+
+At this moment, two images of Arch Linux are building.
+
+- **base**: default image with basic system.
+- **devel**: the basic system with base-devel package group.
+
+Tag format used is as following.
+
+- **base**: `YYYY.MM.DD`, `YYYY.MM.DD-base`, `base`, `latest`
+- **devel**: `YYYY.MM.DD-devel`, `devel`
+
+Old images are archived with format `YYYY.MM.DD` and `YYYY.MM.DD-base` for
+base and `YYYY.MM.DD-devel` for devel.
+
+Visit [Docker Hub][1] or [Quay][2] to see all available tags.
+
+[1]: https://hub.docker.com/r/ogarcia/archlinux/
+[2]: https://quay.io/repository/ogarcia/archlinux/
+
 ## Dependencies for build in your Arch Linux host
 
 Install the following Arch Linux packages:
