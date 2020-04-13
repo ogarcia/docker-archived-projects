@@ -27,7 +27,7 @@ clean:
 	rm -f rootfs.tar
 	rm -f $(DOCKER_IMAGE_FILENAME)
 
-mrpoper: clean
+mrproper: clean
 	docker image rm $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(DOCKER_TAG) > /dev/null 2>&1 || true
 
 rootfs:
