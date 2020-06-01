@@ -14,7 +14,7 @@ echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/rep
 apk -U --no-progress upgrade
 
 # install build deps
-apk --no-progress add g++ git go@edge make musl-dev nodejs nodejs-npm python
+apk --no-progress add g++ git go@edge make musl-dev nodejs nodejs-npm patch
 
 # extract software
 cd /grafana/src/
