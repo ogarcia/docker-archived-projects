@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 19.03.8
       - run:
           name: Build Docker image
           command: make docker-build
@@ -30,7 +30,7 @@ jobs:
           at: /tmp/workspace
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 19.03.8
       - run:
           name: Load archived Docker image
           command: DOCKER_IMAGE_FILENAME=/tmp/workspace/image.tar make docker-load
@@ -44,7 +44,7 @@ jobs:
           at: /tmp/workspace
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 19.03.8
       - run:
           name: Load archived Docker image
           command: DOCKER_IMAGE_FILENAME=/tmp/workspace/image.tar make docker-load
@@ -58,7 +58,7 @@ jobs:
           at: /tmp/workspace
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 19.03.8
       - run:
           name: Load archived Docker image
           command: DOCKER_IMAGE_FILENAME=/tmp/workspace/image.tar make docker-load
