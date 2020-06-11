@@ -38,12 +38,19 @@ ifneq ($(wildcard $(DOCKER_IMAGE_FILENAME)),)
 	docker load -i $(DOCKER_IMAGE_FILENAME)
 endif
 
+MAJOR_TAG := $(word 1,$(subst ., ,${CIRCLE_TAG}))
+MINOR_TAG := $(MAJOR_TAG).$(word 2,$(subst ., ,${CIRCLE_TAG}))
+
 dockerhub-push: check-dockerhub-env
 	echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 	docker push $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest
 ifdef CIRCLE_TAG
 	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):${CIRCLE_TAG}
+	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MINOR_TAG)
+	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MAJOR_TAG)
 	docker push $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):${CIRCLE_TAG}
+	docker push $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MINOR_TAG)
+	docker push $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MAJOR_TAG)
 endif
 
 quay-push: check-quay-env
@@ -52,7 +59,11 @@ quay-push: check-quay-env
 	docker push quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest
 ifdef CIRCLE_TAG
 	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):${CIRCLE_TAG}
+	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MINOR_TAG)
+	docker tag $(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):latest quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MAJOR_TAG)
 	docker push quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):${CIRCLE_TAG}
+	docker push quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MINOR_TAG)
+	docker push quay.io/$(DOCKER_ORGANIZATION)/$(DOCKER_IMAGE):$(MAJOR_TAG)
 endif
 
 .PHONY: all check-dockerhub-env check-quay-env docker-build docker-test docker-save dockerhub-push quay-push
