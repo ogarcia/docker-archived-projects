@@ -6,15 +6,11 @@
 # Distributed under terms of the MIT license.
 #
 
-# add edge repository
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
 # upgrade
 apk -U --no-progress upgrade
 
 # install build deps
-apk --no-progress add g++ git go@edge make musl-dev nodejs nodejs-npm patch
+apk --no-progress add g++ git go make musl-dev nodejs nodejs-npm patch
 
 # extract software
 cd /grafana/src/
@@ -29,7 +25,7 @@ patch -p1 <"/grafana/build/defaults.patch"
 go run build.go setup build
 npm install -g yarn
 yarn install --pure-lockfile --no-progress
-npm run build release
+yarn run build
 
 # install grafana
 install -D -m755 "bin/linux-amd64/grafana-cli" \
@@ -39,7 +35,7 @@ install -D -m755 "bin/linux-amd64/grafana-server" \
 install -D -m644 "conf/defaults.ini" \
   "/grafana/pkg/usr/share/grafana/conf/defaults.ini"
 mv "public" "/grafana/pkg/usr/share/grafana/"
-mv "vendor" "/grafana/pkg/usr/share/grafana/"
+rm -r "/grafana/pkg/usr/share/grafana/public/test"
 install -D -m644 "conf/sample.ini" \
   "/grafana/pkg/etc/grafana/grafana.ini"
 install -D -m644 "conf/ldap.toml" \
