@@ -1,0 +1,29 @@
+{
+  "ManagedBookmarks": [
+    {
+      "name": "Google",
+      "children": [
+        {
+          "url": "google.com",
+          "name": "Google Search"
+        },
+        {
+          "url": "mail.google.com",
+          "name": "Google Mail"
+        },
+        {
+          "url": "drive.google.com",
+          "name": "Google Drive"
+        }
+      ]
+    },
+    {
+      "url": "duckduckgo.com",
+      "name": "DuckDuckGo"
+    },
+    {
+      "url": "github.com",
+      "name": "GitHub"
+    }
+  ]
+}
