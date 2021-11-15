@@ -1,0 +1,35 @@
+--- a/conf/defaults.ini	2020-06-01 11:38:37.823635136 +0200
++++ b/conf/defaults.ini	2020-06-01 11:41:11.908510413 +0200
+@@ -12,19 +12,19 @@
+ #################################### Paths ###############################
+ [paths]
+ # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
+-data = data
++data = /var/lib/grafana
+ 
+ # Temporary files in `data` directory older than given duration will be removed
+ temp_data_lifetime = 24h
+ 
+ # Directory where grafana can store logs
+-logs = data/log
++logs = /var/log/grafana
+ 
+ # Directory where grafana will automatically scan and look for plugins
+-plugins = data/plugins
++plugins = /var/lib/grafana/plugins
+ 
+ # folder that contains provisioning config files that grafana will apply on startup and while running.
+-provisioning = conf/provisioning
++provisioning = /etc/grafana/provisioning
+ 
+ #################################### Server ##############################
+ [server]
+@@ -54,7 +54,7 @@
+ router_logging = false
+ 
+ # the path relative working path
+-static_root_path = public
++static_root_path = /usr/share/grafana/public
+ 
+ # enable gzip
+ enable_gzip = false
