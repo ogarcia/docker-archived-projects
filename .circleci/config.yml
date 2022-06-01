@@ -1,9 +1,9 @@
 version: 2.1
 
 executors:
-  docker-build-buster:
+  docker-build-jammy:
     docker:
-      - image: circleci/buildpack-deps:buster
+      - image: cimg/base:current-22.04
 
 jobs:
   build-rootfs:
@@ -33,7 +33,7 @@ jobs:
           paths:
             - ./rootfs.tar
   build-docker:
-    executor: docker-build-buster
+    executor: docker-build-jammy
     parameters:
       docker-organization:
         type: string
@@ -70,7 +70,7 @@ jobs:
           paths:
             - ./<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
   test:
-    executor: docker-build-buster
+    executor: docker-build-jammy
     parameters:
       docker-organization:
         type: string
@@ -102,7 +102,7 @@ jobs:
           name: Test Arch Linux Docker image
           command: make docker-test
   publish-dockerhub:
-    executor: docker-build-buster
+    executor: docker-build-jammy
     parameters:
       docker-organization:
         type: string
@@ -134,7 +134,7 @@ jobs:
           name: Push Arch Linux Docker image to Docker Hub
           command: make dockerhub-push
   publish-quay:
-    executor: docker-build-buster
+    executor: docker-build-jammy
     parameters:
       docker-organization:
         type: string
