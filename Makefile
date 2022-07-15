@@ -34,11 +34,14 @@ rootfs:
 	$(eval TMPDIR := $(shell mktemp -d))
 	pacstrap -C $(DOCKER_TAG)/pacman.conf -c -d -G -M $(TMPDIR) $(shell cat $(DOCKER_TAG)/packages)
 	cp --recursive --preserve=timestamps --backup --suffix=.pacnew $(DOCKER_TAG)/rootfs/* $(TMPDIR)/
+	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) locale-gen
+	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --init
+	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --populate archlinux
 	tar --numeric-owner --xattrs --acls --exclude-from=$(DOCKER_TAG)/exclude -C $(TMPDIR) -c . -f rootfs.tar
-	rm -rf $(TMPDIR)
+	rm -rf $(TMPDIR) || true
 
 rootfs-in-docker:
 	docker run --rm --privileged --tmpfs=/tmp:exec --tmpfs=/run/shm -v /run/docker.sock:/run/docker.sock \
