@@ -38,10 +38,12 @@ rootfs:
 	arch-chroot $(TMPDIR) locale-gen
 	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --init
+	sleep 2 && mountpoint -q $(TMPDIR) && umount -R $(TMPDIR)
 	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --populate archlinux
+	sleep 2 && mountpoint -q $(TMPDIR) && umount -R $(TMPDIR)
 	tar --numeric-owner --xattrs --acls --exclude-from=$(DOCKER_TAG)/exclude -C $(TMPDIR) -c . -f rootfs.tar
-	rm -rf $(TMPDIR) || true
+	mountpoint -q $(TMPDIR) || rm -rf $(TMPDIR)
 
 rootfs-in-docker:
 	docker run --rm --privileged --tmpfs=/tmp:exec --tmpfs=/run/shm -v /run/docker.sock:/run/docker.sock \
