@@ -12,4 +12,6 @@ broken things.
   Alpine Linux.
 - `docker-influxdb`: the [official image](https://hub.docker.com/_/influxdb)
   is already based on Alpine Linux.
+- `docker-sks`: [sks](https://github.com/SKS-Keyserver/sks-keyserver) was
+  superseded by [hagrid](https://gitlab.com/hagrid-keyserver/hagrid).
 - `dockerfiles`: unused anymore.
