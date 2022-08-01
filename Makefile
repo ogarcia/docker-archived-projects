@@ -36,10 +36,9 @@ rootfs:
 	cp --recursive --preserve=timestamps --backup --suffix=.pacnew $(DOCKER_TAG)/rootfs/* $(TMPDIR)/
 	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) locale-gen
-	mount --bind $(TMPDIR) $(TMPDIR)
+	mountpoint -q $(TMPDIR) || mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --init
-	sleep 2 && mountpoint -q $(TMPDIR) && umount -R $(TMPDIR)
-	mount --bind $(TMPDIR) $(TMPDIR)
+	mountpoint -q $(TMPDIR) || mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) pacman-key --populate archlinux
 	sleep 2 && mountpoint -q $(TMPDIR) && umount -R $(TMPDIR)
 	tar --numeric-owner --xattrs --acls --exclude-from=$(DOCKER_TAG)/exclude -C $(TMPDIR) -c . -f rootfs.tar
