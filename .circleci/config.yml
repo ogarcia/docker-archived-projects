@@ -56,7 +56,7 @@ jobs:
           at: << parameters.workspace-path >>
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 20.10.17
       - run:
           name: Build Arch Linux Docker image
           command: |
@@ -94,7 +94,7 @@ jobs:
           at: << parameters.workspace-path >>
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 20.10.17
       - run:
           name: Load archived Arch Linux Docker image
           command: make docker-load
@@ -126,7 +126,7 @@ jobs:
           at: << parameters.workspace-path >>
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 20.10.17
       - run:
           name: Load archived Arch Linux Docker image
           command: make docker-load
@@ -158,7 +158,7 @@ jobs:
           at: << parameters.workspace-path >>
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 20.10.17
       - run:
           name: Load archived Arch Linux Docker image
           command: make docker-load
