@@ -32,7 +32,7 @@ mrproper: clean
 
 rootfs:
 	$(eval TMPDIR := $(shell mktemp -d))
-	pacstrap -C $(DOCKER_TAG)/pacman.conf -c -d -G -M $(TMPDIR) $(shell cat $(DOCKER_TAG)/packages)
+	pacstrap -C $(DOCKER_TAG)/pacman.conf -c -G -M $(TMPDIR) $(shell cat $(DOCKER_TAG)/packages)
 	cp --recursive --preserve=timestamps --backup --suffix=.pacnew $(DOCKER_TAG)/rootfs/* $(TMPDIR)/
 	mount --bind $(TMPDIR) $(TMPDIR)
 	arch-chroot $(TMPDIR) locale-gen
