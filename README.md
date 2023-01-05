@@ -1,6 +1,6 @@
 # Docker images for Arch Linux [![CircleCI](https://circleci.com/gh/ogarcia/docker-archlinux.svg?style=svg)](https://circleci.com/gh/ogarcia/docker-archlinux)
 
-(c) 2017-2022 Óscar García Amor
+(c) 2017-2023 Óscar García Amor
 
 This repository contains all the scripts and files needed to create various
 Docker image flavors of the Arch Linux distribution.

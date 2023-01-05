@@ -178,9 +178,11 @@ workflows:
           requires:
             - build-docker
       - publish-dockerhub:
+          context: dockerhub
           requires:
             - test
       - publish-quay:
+          context: quay-og
           requires:
             - test
   build-deploy-archlinux-devel:
@@ -196,10 +198,12 @@ workflows:
           requires:
             - build-docker
       - publish-dockerhub:
+          context: dockerhub
           docker-tag: devel
           requires:
             - test
       - publish-quay:
+          context: quay-og
           docker-tag: devel
           requires:
             - test
