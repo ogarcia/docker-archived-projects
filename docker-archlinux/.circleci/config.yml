@@ -1,0 +1,209 @@
+version: 2.1
+
+executors:
+  docker-build-jammy:
+    docker:
+      - image: cimg/base:current-22.04
+
+jobs:
+  build-rootfs:
+    machine:
+      image: ubuntu-2204:2022.04.1
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+    steps:
+      - checkout
+      - run:
+          name: Build Arch Linux RootFS
+          command: make rootfs-in-docker
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./rootfs.tar
+  build-docker:
+    executor: docker-build-jammy
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.17
+      - run:
+          name: Build Arch Linux Docker image
+          command: |
+            mv << parameters.workspace-path >>/rootfs.tar .
+            make docker-build
+      - run:
+          name: Save Arch Linux Docker image
+          command: make docker-save
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+  test:
+    executor: docker-build-jammy
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.17
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Test Arch Linux Docker image
+          command: make docker-test
+  publish-dockerhub:
+    executor: docker-build-jammy
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.17
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Push Arch Linux Docker image to Docker Hub
+          command: make dockerhub-push
+  publish-quay:
+    executor: docker-build-jammy
+    parameters:
+      docker-organization:
+        type: string
+        default: ogarcia
+      docker-image:
+        type: string
+        default: archlinux
+      docker-tag:
+        type: string
+        default: base
+      workspace-path:
+        type: string
+        default: /tmp/workspace
+    environment:
+      DOCKER_ORGANIZATION: << parameters.docker-organization >>
+      DOCKER_IMAGE: << parameters.docker-image >>
+      DOCKER_TAG: << parameters.docker-tag >>
+      DOCKER_IMAGE_FILENAME: << parameters.workspace-path >>/<< parameters.docker-organization >>_<< parameters.docker-image >>_<< parameters.docker-tag >>.tar
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace-path >>
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.17
+      - run:
+          name: Load archived Arch Linux Docker image
+          command: make docker-load
+      - run:
+          name: Push Arch Linux Docker image to Quay.io
+          command: make quay-push
+
+workflows:
+  version: 2
+  build-deploy-archlinux:
+    jobs:
+      - build-rootfs
+      - build-docker:
+          requires:
+            - build-rootfs
+      - test:
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          context: dockerhub
+          requires:
+            - test
+      - publish-quay:
+          context: quay-og
+          requires:
+            - test
+  build-deploy-archlinux-devel:
+    jobs:
+      - build-rootfs:
+          docker-tag: devel
+      - build-docker:
+          docker-tag: devel
+          requires:
+            - build-rootfs
+      - test:
+          docker-tag: devel
+          requires:
+            - build-docker
+      - publish-dockerhub:
+          context: dockerhub
+          docker-tag: devel
+          requires:
+            - test
+      - publish-quay:
+          context: quay-og
+          docker-tag: devel
+          requires:
+            - test
