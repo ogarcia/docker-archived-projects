@@ -7,6 +7,7 @@ broken things.
 
 ## Contents and reasons for deprecate
 
+- `docker-archlinux`: repository rebuilt from scratch to be multiarch.
 - `docker-grafana`: the [official
   image](https://hub.docker.com/r/grafana/grafana) is already based on
   Alpine Linux.
