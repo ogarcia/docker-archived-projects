@@ -11,13 +11,12 @@ Nextcloud Server with your computer.
 This docker packages **Nextcloud Desktop Client** under [Alpine Linux][2],
 a lightweight Linux distribution.
 
-Visit [Docker Hub][3], [Quay][4] or [GitHub][5] to see all available tags.
+Visit [Quay][3] or [GitHub][4] to see all available tags.
 
 [1]: https://github.com/nextcloud/desktop
 [2]: https://alpinelinux.org/
-[3]: https://hub.docker.com/r/connectical/nextcloud-client/
-[4]: https://quay.io/repository/connectical/nextcloud-client/
-[5]: https://github.com/orgs/connectical/packages/container/package/nextcloud-client
+[3]: https://quay.io/repository/connectical/nextcloud-client
+[4]: https://github.com/orgs/connectical/packages/container/package/nextcloud-client
 
 ## Prepare
 
@@ -61,8 +60,7 @@ ntp:x:123:123:NTP:/var/empty:/sbin/nologin
 smmsp:x:209:209:smmsp:/var/spool/mqueue:/sbin/nologin
 guest:x:405:100:guest:/dev/null:/sbin/nologin
 nobody:x:65534:65534:nobody:/:/sbin/nologin
-messagebus:x:100:101:messagebus:/dev/null:/sbin/nologin
-youruser:x:1000:1000:root:/data:/bin/ash
+youruser:x:1000:1000::/data:/bin/ash
 ```
 
 Store this file in `/srv/nextcloud-client/conf/passwd`.
@@ -74,25 +72,52 @@ To run this container, simply exec.
 ```shell
 docker run -d \
   --name=nextcloud-client \
-  -p 127.0.0.1:5900:5900 \
   -u 1000:1000 \ # Set to UID and GID you want
-  -e VNCPASS=VERYSECUREPASSWORD \
   -v /srv/nextcloud-client/conf/passwd:/etc/passwd \
   -v /srv/nextcloud-client/home:/data \
   -v /srv/nextcloud-client/documents:/data/documents \
-  connectical/nextcloud-client
+  ghcr.io/connectical/nextcloud-client \
+  -path /documents /data/documents https://<username>:<secret>@<server_address>
 ```
 
 This will run `nextcloud-client`, store the configuration in the
 `/srv/nextcloud-client/home` and the synchronized data in
 `/srv/nextcloud-client/documents`.
 
-Once it is running you will be able to connect with a VNC client to port
-5900 to configure or control the NextCloud client.
-
 You can launch this container with systemd using
 `docker-nextcloud-client.service` (you must set the values to your
 preference beforehand).
+
+## Advanced usage
+
+If you want to synchronize several directories or configure the client to
+your liking my advice is to configure your own `entrypoint.sh`. For example,
+to synchronize two directories.
+```shell
+#! /bin/sh
+#
+# entrypoint.sh
+
+while true; do
+  nextcloudcmd -path /documents /data/documents https://<username>:<secret>@<server_address>
+  nextcloudcmd -path /other /data/other https://<username>:<secret>@<server_address>
+  sleep 60
+done
+```
+
+Save the file as `/srv/nextcloud-client/conf/entrypoint.sh`, give it run
+permissions and launch the container as follows.
+```shell
+docker run -d \
+  --name=nextcloud-client \
+  -u 1000:1000 \ # Set to UID and GID you want
+  -v /srv/nextcloud-client/conf/passwd:/etc/passwd \
+  -v /srv/nextcloud-client/conf/entrypoint.sh:/entrypoint.sh \
+  -v /srv/nextcloud-client/home:/data \
+  -v /srv/nextcloud-client/documents:/data/documents \
+  -v /srv/nextcloud-client/other:/data/other \
+  ghcr.io/connectical/nextcloud-client
+```
 
 ## Shell run
 
@@ -101,7 +126,7 @@ If you can run a shell instead `entrypoint.sh` command, simply do.
 ```sh
 docker run -t -i --rm \
   --entrypoint=/bin/sh \
-  connectical/nextcloud-client
+  ghcr.io/connectical/nextcloud-client
 ```
 
 Please note that the `--rm` modifier destroy the docker after shell exit.
