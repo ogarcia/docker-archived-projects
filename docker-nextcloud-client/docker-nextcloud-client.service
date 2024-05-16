@@ -1,0 +1,23 @@
+# vim: filetype=systemd
+[Unit]
+Description=Nextcloud client container
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill nextcloud-client
+ExecStartPre=-/usr/bin/docker rm nextcloud-client
+ExecStartPre=/usr/bin/docker pull ghcr.io/connectical/nextcloud-client
+ExecStart=/usr/bin/docker run \
+  --name nextcloud-client \
+  -u 1000:1000 \
+  -v /srv/nextcloud-client/conf/passwd:/etc/passwd \
+  -v /srv/nextcloud-client/home:/data \
+  -v /srv/nextcloud-client/documents:/data/documents \
+  ghcr.io/connectical/nextcloud-client \
+  -path /documents /data/documents https://<username>:<secret>@<server_address>
+ExecStop=/usr/bin/docker stop -t 2 nextcloud-client
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
