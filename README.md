@@ -16,4 +16,6 @@ broken things.
 - `docker-nextcloud-client`: unused anymore.
 - `docker-sks`: [sks](https://github.com/SKS-Keyserver/sks-keyserver) was
   superseded by [hagrid](https://gitlab.com/hagrid-keyserver/hagrid).
+- `docker-taskd`: superseded by [TaskChampion
+  Sync-Server](https://github.com/GothenburgBitFactory/taskchampion-sync-server).
 - `dockerfiles`: unused anymore.
